@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.kvizznanja">
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <application
+        android:allowBackup="true"
+        android:label="Kviz znanja"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".QuizActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".CelebrationActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".MyResultsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".TopResultsActivity"
+            android:exported="false"/>
+
+    </application>
+
+</manifest>

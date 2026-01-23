@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "852994640042",
+    "project_id": "kvizznanja-bb4a9",
+    "storage_bucket": "kvizznanja-bb4a9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852994640042:android:560b18ce012c69aa14e8d3",
+        "android_client_info": {
+          "package_name": "com.example.kvizznanja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852994640042-8v44151bohj7fetnouaqasjq1jn2m6rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdSmdWDbd_IvrG9MzDLAX92W36eo_rCsc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852994640042-8v44151bohj7fetnouaqasjq1jn2m6rq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

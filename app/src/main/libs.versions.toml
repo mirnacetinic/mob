@@ -1,0 +1,9 @@
+toml
+[versions]
+# ... existing versions
+firebaseFirestore = "25.1.1" # Use a compatible version (latest as of early 2025)
+
+[libraries]
+# ... existing libraries
+# Add the line below:
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
