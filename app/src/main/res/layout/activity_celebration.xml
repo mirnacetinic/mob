@@ -1,39 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:background="#F5F5F5">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#F8FAFC">
 
     <TextView
         android:id="@+id/trophy"
-        android:text="🏆"
-        android:textSize="64sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" />
+        android:text="🏆"
+        android:textSize="120sp"
+        android:layout_marginBottom="16dp"
+        android:shadowColor="#40000000"
+        android:shadowDx="0"
+        android:shadowDy="8"
+        android:shadowRadius="10"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Čestitamo!"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#1E293B"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/scoreView"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:text="Tvoj rezultat: 0"
-        android:textColor="#212121"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"/>
+        android:text="Tvoj rezultat: 0"
+        android:textSize="22sp"
+        android:textColor="#64748B"
+        android:layout_marginBottom="48dp"
+        android:background="#EFF6FF"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"/>
 
-    <Button
-        android:id="@+id/menuBtn"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Povratak u meni"
-        android:layout_marginBottom="12dp"/>
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        android:backgroundTint="@android:color/transparent">
 
-    <Button
-        android:id="@+id/myResultsBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Moji rezultati"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/menuBtn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Povratak u meni"
+                android:background="@drawable/button"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                app:cornerRadius="24dp" />
+
+            <Button
+                android:id="@+id/myResultsBtn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Pogledaj moje rezultate"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:strokeColor="#3B82F6"
+                android:textColor="#3B82F6"
+                app:cornerRadius="24dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

@@ -5,33 +5,17 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class QuizActivity extends AppCompatActivity {
+public class QuizActivity extends BaseActivity {
 
     private TextView questionText, scoreText, timerText;
-    private Button option1, option2, option3, option4;
-
+    private Button[] options = new Button[4];
     private ArrayList<Question> questions;
-    private int currentQuestionIndex = 0;
-    private int score = 0;
-
+    private int currentQuestionIndex = 0, score = 0;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMillis = 60000; // 60 sekundi
-
-    private boolean isPaused = false;
-    private boolean timerRunning = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,34 +25,18 @@ public class QuizActivity extends AppCompatActivity {
         questionText = findViewById(R.id.questionText);
         scoreText = findViewById(R.id.scoreText);
         timerText = findViewById(R.id.timerText);
+        options[0] = findViewById(R.id.option1);
+        options[1] = findViewById(R.id.option2);
+        options[2] = findViewById(R.id.option3);
+        options[3] = findViewById(R.id.option4);
 
-        option1 = findViewById(R.id.option1);
-        option2 = findViewById(R.id.option2);
-        option3 = findViewById(R.id.option3);
-        option4 = findViewById(R.id.option4);
-
-        // Učitavanje pitanja
         loadQuestions();
-
-        // Pokreni kviz
-        if(!questions.isEmpty()){
-            loadQuestion(currentQuestionIndex);
-            startTimer();
-        } else {
-            Toast.makeText(this, "Nema pitanja za kviz", Toast.LENGTH_SHORT).show();
-        }
-
-        // Opcije click listeneri
-        option1.setOnClickListener(v -> checkAnswer(option1.getText().toString()));
-        option2.setOnClickListener(v -> checkAnswer(option2.getText().toString()));
-        option3.setOnClickListener(v -> checkAnswer(option3.getText().toString()));
-        option4.setOnClickListener(v -> checkAnswer(option4.getText().toString()));
+        showQuestion();
+        startTimer();
     }
 
     private void loadQuestions() {
         questions = new ArrayList<>();
-
-        // Primjer pitanja iz IT-a
         questions.add(new Question("Što je JVM?", "Java Virtual Machine", "Java Very Much", "Just Virtual Method", "Java Verified Module", "Java Virtual Machine"));
         questions.add(new Question("Što znači SQL?", "Structured Query Language", "Simple Query List", "Structured Question Language", "Sequential Query Language", "Structured Query Language"));
         questions.add(new Question("Koja metoda pokreće thread?", "start()", "run()", "init()", "execute()", "start()"));
@@ -81,104 +49,48 @@ public class QuizActivity extends AppCompatActivity {
         questions.add(new Question("Što je JSON?", "Format za podatke", "Programski jezik", "Database", "Editor", "Format za podatke"));
     }
 
-    private void loadQuestion(int index) {
-        if(index < 0 || index >= questions.size()){
-            finishQuiz();
-            return;
-        }
+    private void showQuestion() {
+        if (currentQuestionIndex < questions.size()) {
+            Question q = questions.get(currentQuestionIndex);
+            questionText.setText(q.getQuestion());
+            options[0].setText(q.getOption1());
+            options[1].setText(q.getOption2());
+            options[2].setText(q.getOption3());
+            options[3].setText(q.getOption4());
 
-        Question q = questions.get(index);
-        questionText.setText(q.getQuestion());
-        option1.setText(q.getOption1());
-        option2.setText(q.getOption2());
-        option3.setText(q.getOption3());
-        option4.setText(q.getOption4());
-        scoreText.setText("Bodovi: " + score);
+            for (Button btn : options) {
+                btn.setOnClickListener(v -> checkAnswer(btn.getText().toString(), q.getCorrectAnswer()));
+            }
+        } else {
+            finishQuiz();
+        }
     }
 
-    private void checkAnswer(String selectedOption){
-        Question q = questions.get(currentQuestionIndex);
-
-        if(selectedOption.equals(q.getCorrectAnswer())){
-            score += 10;
-            Toast.makeText(this, "Točno!", Toast.LENGTH_SHORT).show();
-        } else {
-            score -= 5;
-            Toast.makeText(this, "Netočno!", Toast.LENGTH_SHORT).show();
-        }
-
-        // Sljedeće pitanje
+    private void checkAnswer(String selected, String correct) {
+        if (selected.equals(correct)) score += 10;
+        scoreText.setText("Bodovi: " + score);
         currentQuestionIndex++;
-        if(currentQuestionIndex < questions.size()){
-            loadQuestion(currentQuestionIndex);
-        } else {
-            finishQuiz();
-        }
+        showQuestion();
     }
 
     private void startTimer() {
-        timerRunning = true;
-
-        countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
+        countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
-            public void onTick(long millisUntilFinished) {
-                timeLeftInMillis = millisUntilFinished;
-                timerText.setText("Vrijeme: " + (millisUntilFinished / 1000) + "s");
-            }
-
+            public void onTick(long l) { timerText.setText("Vrijeme: " + l / 1000 + "s"); }
             @Override
-            public void onFinish() {
-                timerRunning = false;
-                finishQuiz();
-            }
+            public void onFinish() { finishQuiz(); }
         }.start();
     }
 
+    private void finishQuiz() {
+        if (countDownTimer != null) countDownTimer.cancel();
 
-    private void finishQuiz(){
-        if(countDownTimer != null){
-            countDownTimer.cancel();
-        }
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        FirebaseFirestore.getInstance().collection("results").add(new Result(email, score));
 
-        // Dohvati trenutno prijavljenog korisnika
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(user != null){
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            Result result = new Result(user.getEmail(),score);
-            db.collection("results").add(result);
-        }
-
-        // ➡️ Idi na Celebration screen
-        Intent intent = new Intent(QuizActivity.this, CelebrationActivity.class);
-        intent.putExtra("score", score);
-        startActivity(intent);
+        Intent i = new Intent(this, CelebrationActivity.class);
+        i.putExtra("score", score);
+        startActivity(i);
         finish();
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (countDownTimer != null && timerRunning) {
-            countDownTimer.cancel();
-            timerRunning = false;
-            isPaused = true;
-        }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (isPaused && timeLeftInMillis > 0 && !timerRunning) {
-            startTimer();
-            isPaused = false;
-        }
-    }
-
-
-
 }

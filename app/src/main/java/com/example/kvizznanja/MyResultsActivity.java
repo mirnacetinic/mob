@@ -1,70 +1,53 @@
 package com.example.kvizznanja;
 
 import android.os.Bundle;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class MyResultsActivity extends AppCompatActivity {
+public class MyResultsActivity extends BaseActivity {
 
-    private ListView resultsListView;
-    private ArrayList<String> results;
+    private RecyclerView recyclerView;
     private ResultsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_results);
+        setContentView(R.layout.activity_results);
 
-        resultsListView = findViewById(R.id.resultsListView);
-        results = new ArrayList<>();
-        adapter = new ResultsAdapter(this, results);
-        resultsListView.setAdapter(adapter);
+        TextView title = findViewById(R.id.resultsTitle);
+        title.setText("Moji rezultati");
+
+        recyclerView = findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadMyResults();
     }
 
     private void loadMyResults() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
 
-        if (user == null) {
-            Toast.makeText(this, "Korisnik nije prijavljen", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String email = user.getEmail();
+        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         FirebaseFirestore.getInstance()
                 .collection("results")
-                .whereEqualTo("email", email)
+                .whereEqualTo("email", userEmail)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    List<Result> resultList = querySnapshot.toObjects(Result.class);
-
-                    if (resultList.isEmpty()) {
-                        Toast.makeText(this, "Nema tvojih rezultata", Toast.LENGTH_SHORT).show();
-                        return;
+                    List<Result> results = querySnapshot.toObjects(Result.class);
+                    if (results.isEmpty()) {
+                        Toast.makeText(this, "Nemate spremljenih rezultata", Toast.LENGTH_SHORT).show();
+                    } else {
+                        adapter = new ResultsAdapter(results);
+                        recyclerView.setAdapter(adapter);
                     }
-
-                    results.clear();
-                    for (Result r : resultList) {
-                        results.add(r.getEmail() + " - " + r.getScore());
-                    }
-
-                    adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this,
-                            "Greška pri dohvaćanju: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Greška: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 }

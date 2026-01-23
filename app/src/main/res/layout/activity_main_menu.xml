@@ -1,46 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#F8FAFC">
 
     <TextView
-        android:text="🎓 Kviz Znanja"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#212121"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"/>
+        android:text="🎓"
+        android:textSize="80sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kviz Znanja"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#1E293B"
+        android:layout_marginBottom="48dp"/>
 
     <Button
         android:id="@+id/startQuizBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:text="Započni kviz"
+        android:textAllCaps="false"
+        android:textSize="18sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"/>
-
+        android:layout_marginBottom="16dp"
+        android:elevation="4dp"/>
 
     <Button
         android:id="@+id/myResultsBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:text="Moji rezultati"
+        android:textAllCaps="false"
+        android:textSize="18sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/topResultsBtn"
-        android:text="Top 10 rezultata"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Top lista"
+        android:textAllCaps="false"
+        android:textSize="18sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button"
-        android:layout_width="match_parent"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
+        android:id="@+id/logoutBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"/>
+        android:text="Odjavi se"
+        android:textColor="#EF4444"
+        android:textAllCaps="false"/>
+
 </LinearLayout>

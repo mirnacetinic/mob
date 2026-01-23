@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText email, password;
     private Button loginBtn, registerBtn;
@@ -23,7 +20,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseApp.initializeApp(this); // inicijalizacija Firebase-a
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this);
+        }
+
         auth = FirebaseAuth.getInstance();
 
         email = findViewById(R.id.email);
@@ -32,32 +32,48 @@ public class LoginActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.registerBtn);
 
         loginBtn.setOnClickListener(v -> loginUser());
-        registerBtn.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        registerBtn.setOnClickListener(v ->
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class))
+        );
+    }
 
-        // Ako je već prijavljen, odmah ide na izbornik
+    @Override
+    protected void onStart() {
+        super.onStart();
         FirebaseUser user = auth.getCurrentUser();
-        if(user != null){
-            startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
-            finish();
+        if (user != null) {
+            navigateToMainMenu();
         }
     }
 
     private void loginUser() {
-        String e = email.getText().toString();
-        String p = password.getText().toString();
+        String e = email.getText().toString().trim();
+        String p = password.getText().toString().trim();
 
-        if(e.isEmpty() || p.isEmpty()){
+        if (e.isEmpty() || p.isEmpty()) {
             Toast.makeText(this, "Unesi email i lozinku", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        auth.signInWithEmailAndPassword(e, p).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
-                finish();
-            } else {
-                Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        auth.signInWithEmailAndPassword(e, p)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        navigateToMainMenu();
+                    } else {
+                        Toast.makeText(
+                                this,
+                                "Login failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
+    }
+
+    private void navigateToMainMenu() {
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        // Očisti stack da korisnik ne može natrag u login
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

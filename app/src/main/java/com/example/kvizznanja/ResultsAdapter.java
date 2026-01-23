@@ -1,39 +1,48 @@
 package com.example.kvizznanja;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class ResultsAdapter extends ArrayAdapter<String> {
+public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHolder> {
 
-    private Context context;
-    private ArrayList<String> results;
+    private final List<Result> results;
 
-    public ResultsAdapter(@NonNull Context context, ArrayList<String> results) {
-        super(context, 0, results);
-        this.context = context;
+    public ResultsAdapter(List<Result> results){
         this.results = results;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null){
-            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_result, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position){
+        Result r = results.get(position);
+        holder.email.setText(r.getEmail());
+        holder.score.setText(String.valueOf(r.getScore()));
+    }
+
+    @Override
+    public int getItemCount() {
+        return results == null ? 0 : results.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView email, score;
+        public ViewHolder(@NonNull View itemView){
+            super(itemView);
+            email = itemView.findViewById(R.id.resultEmail);
+            score = itemView.findViewById(R.id.resultScore);
         }
-
-        String result = results.get(position);
-        TextView textView = convertView.findViewById(android.R.id.text1);
-        textView.setText(result);
-
-        return convertView;
     }
 }

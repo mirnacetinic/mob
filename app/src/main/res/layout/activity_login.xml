@@ -1,11 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:gravity="center"
+    android:background="#F8FAFC">
 
-    <EditText android:id="@+id/email" android:hint="Email" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <EditText android:id="@+id/password" android:hint="Lozinka" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <Button android:id="@+id/loginBtn" android:text="Login" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <Button android:id="@+id/registerBtn" android:text="Registracija" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dobrodošli natrag"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#1E293B"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prijavite se za nastavak kviza"
+        android:textColor="#64748B"
+        android:layout_marginBottom="32dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Email adresa"
+        app:startIconDrawable="@android:drawable/ic_dialog_email"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Lozinka"
+        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
+        app:passwordToggleEnabled="true"
+        android:layout_marginBottom="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Prijavi se"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/registerBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nemaš račun? Registriraj se"
+        android:textAllCaps="false"
+        android:textColor="#3B82F6"/>
+
 </LinearLayout>

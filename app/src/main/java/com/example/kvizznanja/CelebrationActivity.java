@@ -2,16 +2,13 @@ package com.example.kvizznanja;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.Animation;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class CelebrationActivity extends AppCompatActivity {
+public class CelebrationActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +16,7 @@ public class CelebrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_celebration);
 
         TextView scoreView = findViewById(R.id.scoreView);
-        TextView trophy = findViewById(R.id.trophy);
+        TextView trophy = findViewById(R.id.trophy); //
         Button menuBtn = findViewById(R.id.menuBtn);
         Button myResultsBtn = findViewById(R.id.myResultsBtn);
 
@@ -41,17 +38,14 @@ public class CelebrationActivity extends AppCompatActivity {
     }
 
     private void playCelebrationAnimation(TextView scoreView, TextView trophy) {
-
-        // Fade in
+        // Fade in + scale
         AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
         fadeIn.setDuration(600);
 
-        // Bounce
         ScaleAnimation scale = new ScaleAnimation(
-                0.5f, 1.2f,
-                0.5f, 1.2f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
+                0.5f, 1.2f, 0.5f, 1.2f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f
         );
         scale.setDuration(600);
 
