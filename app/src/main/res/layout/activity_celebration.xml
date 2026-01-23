@@ -21,9 +21,10 @@
         android:shadowRadius="10"/>
 
     <TextView
+        android:id="@+id/messageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Čestitamo!"
+        android:text="Rezultat"
         android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="#1E293B"
@@ -46,7 +47,6 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
-        app:strokeWidth="0dp"
         android:backgroundTint="@android:color/transparent">
 
         <LinearLayout
@@ -63,8 +63,7 @@
                 android:textColor="@android:color/white"
                 android:textAllCaps="false"
                 android:textSize="18sp"
-                android:layout_marginBottom="16dp"
-                app:cornerRadius="24dp" />
+                android:layout_marginBottom="16dp" />
 
             <Button
                 android:id="@+id/myResultsBtn"
@@ -80,5 +79,4 @@
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
 </LinearLayout>

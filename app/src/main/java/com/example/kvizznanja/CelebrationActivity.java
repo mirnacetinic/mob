@@ -16,12 +16,22 @@ public class CelebrationActivity extends BaseActivity {
         setContentView(R.layout.activity_celebration);
 
         TextView scoreView = findViewById(R.id.scoreView);
-        TextView trophy = findViewById(R.id.trophy); //
+        TextView trophy = findViewById(R.id.trophy);
+        TextView messageTitle = findViewById(R.id.messageTitle);
         Button menuBtn = findViewById(R.id.menuBtn);
         Button myResultsBtn = findViewById(R.id.myResultsBtn);
 
         int score = getIntent().getIntExtra("score", 0);
         scoreView.setText("Tvoj rezultat: " + score);
+
+        // LOGIKA ZA PORUKU I EMOJI
+        if (score >= 5) {
+            messageTitle.setText("Čestitamo!");
+            trophy.setText("🏆");
+        } else {
+            messageTitle.setText("Više sreće drugi put!");
+            trophy.setText("💪");
+        }
 
         playCelebrationAnimation(scoreView, trophy);
 
@@ -38,7 +48,6 @@ public class CelebrationActivity extends BaseActivity {
     }
 
     private void playCelebrationAnimation(TextView scoreView, TextView trophy) {
-        // Fade in + scale
         AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
         fadeIn.setDuration(600);
 
