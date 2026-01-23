@@ -28,7 +28,7 @@ public class TopResultsAdapter extends RecyclerView.Adapter<TopResultsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
         Result r = results.get(position);
-        holder.name.setText(r.getName());
+        holder.email.setText(r.getEmail());
         holder.score.setText(String.valueOf(r.getScore()));
     }
 
@@ -38,10 +38,10 @@ public class TopResultsAdapter extends RecyclerView.Adapter<TopResultsAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, score;
+        TextView email, score;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-            name = itemView.findViewById(R.id.resultName);
+            email = itemView.findViewById(R.id.resultEmail);
             score = itemView.findViewById(R.id.resultScore);
         }
     }
