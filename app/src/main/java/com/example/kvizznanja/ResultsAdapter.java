@@ -29,7 +29,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
         Result r = results.get(position);
         holder.email.setText(r.getEmail());
-        holder.score.setText(String.valueOf(r.getScore()));
+        holder.score.setText(String.valueOf(r.getScore()) + " bod");
+        holder.time.setText(String.valueOf(r.getTime()) + 's');
     }
 
     @Override
@@ -38,11 +39,12 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView email, score;
+        TextView email, score, time;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             email = itemView.findViewById(R.id.resultEmail);
             score = itemView.findViewById(R.id.resultScore);
+            time = itemView.findViewById(R.id.resultTime);
         }
     }
 }

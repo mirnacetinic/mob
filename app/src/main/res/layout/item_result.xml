@@ -37,5 +37,17 @@
             android:background="#EFF6FF"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"/>
+
+        <TextView
+            android:id="@+id/resultTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="150"
+            android:textColor="#3B82F6"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:background="#EFF6FF"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

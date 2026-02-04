@@ -16,6 +16,7 @@ public class CelebrationActivity extends BaseActivity {
         setContentView(R.layout.activity_celebration);
 
         TextView scoreView = findViewById(R.id.scoreView);
+        TextView timeView = findViewById(R.id.timeView);
         TextView trophy = findViewById(R.id.trophy);
         TextView messageTitle = findViewById(R.id.messageTitle);
         Button menuBtn = findViewById(R.id.menuBtn);
@@ -24,8 +25,10 @@ public class CelebrationActivity extends BaseActivity {
         int score = getIntent().getIntExtra("score", 0);
         scoreView.setText("Tvoj rezultat: " + score);
 
-        // LOGIKA ZA PORUKU I EMOJI
-        if (score >= 5) {
+        int time = getIntent().getIntExtra("timeLeft", 0);
+        timeView.setText("Preostalo ti je još: " + time + " s");
+
+        if (score >= 50) {
             messageTitle.setText("Čestitamo!");
             trophy.setText("🏆");
         } else {

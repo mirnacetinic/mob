@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
@@ -15,7 +16,10 @@ public class QuizActivity extends BaseActivity {
     private Button[] options = new Button[4];
     private ArrayList<Question> questions;
     private int currentQuestionIndex = 0, score = 0;
+
     private CountDownTimer countDownTimer;
+    private long millisRemaining = 60000;
+    private int secondsForFirebase = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,8 @@ public class QuizActivity extends BaseActivity {
 
         loadQuestions();
         showQuestion();
-        startTimer();
+
+        startTimer(millisRemaining);
     }
 
     private void loadQuestions() {
@@ -67,29 +72,66 @@ public class QuizActivity extends BaseActivity {
     }
 
     private void checkAnswer(String selected, String correct) {
-        if (selected.equals(correct)) score += 10;
+        if (selected.equals(correct)) {
+            score += 10;
+            Toast.makeText(this, "Točno! :)", Toast.LENGTH_SHORT).show();
+        } else {
+            score -= 10;
+            Toast.makeText(this, "Netočno! :(", Toast.LENGTH_SHORT).show();
+        }
+
         scoreText.setText("Bodovi: " + score);
         currentQuestionIndex++;
         showQuestion();
     }
 
-    private void startTimer() {
-        countDownTimer = new CountDownTimer(60000, 1000) {
+    private void startTimer(long duration) {
+        if (countDownTimer != null) countDownTimer.cancel();
+
+        countDownTimer = new CountDownTimer(duration, 1000) {
             @Override
-            public void onTick(long l) { timerText.setText("Vrijeme: " + l / 1000 + "s"); }
+            public void onTick(long l) {
+                millisRemaining = l;
+                secondsForFirebase = (int) (l / 1000);
+                timerText.setText("Vrijeme: " + secondsForFirebase + "s");
+            }
+
             @Override
-            public void onFinish() { finishQuiz(); }
+            public void onFinish() {
+                secondsForFirebase = 0;
+                finishQuiz();
+            }
         }.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (millisRemaining > 0) {
+            startTimer(millisRemaining);
+        }
     }
 
     private void finishQuiz() {
         if (countDownTimer != null) countDownTimer.cancel();
 
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        FirebaseFirestore.getInstance().collection("results").add(new Result(email, score));
+
+
+        Result result = new Result(email, score, secondsForFirebase);
+        FirebaseFirestore.getInstance().collection("results").add(result);
 
         Intent i = new Intent(this, CelebrationActivity.class);
         i.putExtra("score", score);
+        i.putExtra("timeLeft", secondsForFirebase);
         startActivity(i);
         finish();
     }
