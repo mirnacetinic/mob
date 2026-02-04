@@ -16,7 +16,8 @@ public class MainMenuActivity extends BaseActivity {
         Button startQuizBtn = findViewById(R.id.startQuizBtn);
         Button myResultsBtn = findViewById(R.id.myResultsBtn);
         Button topResultsBtn = findViewById(R.id.topResultsBtn);
-        Button logoutBtn = findViewById(R.id.logoutBtn); // dodaj u XML
+        Button logoutBtn = findViewById(R.id.logoutBtn);
+        Button allPlayersBtn = findViewById(R.id.allPlayersBtn);
 
         startQuizBtn.setOnClickListener(v -> startActivity(new Intent(this, QuizActivity.class)));
         myResultsBtn.setOnClickListener(v -> startActivity(new Intent(this, MyResultsActivity.class)));
@@ -28,5 +29,7 @@ public class MainMenuActivity extends BaseActivity {
             startActivity(intent);
             finish();
         });
+
+        allPlayersBtn.setOnClickListener(v -> startActivity(new Intent(this, AllPlayersActivity.class)));
     }
 }

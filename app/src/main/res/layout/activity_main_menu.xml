@@ -59,6 +59,17 @@
         android:layout_marginBottom="40dp"/>
 
     <Button
+        android:id="@+id/allPlayersBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="All Players"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
         android:id="@+id/logoutBtn"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
